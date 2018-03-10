@@ -1,3 +1,4 @@
+// Mouse parallax lib
 const parallaxBox = document.querySelector(".parallax-box")
 const layer1Top = document.getElementById("layer-1").offsetTop
 const layer1Left = document.getElementById("layer-1").offsetLeft
@@ -40,4 +41,36 @@ function mouseParallax(
       speed
   layer.style.transform =
     "translate3d(" + newPosLeft + "px," + newPosTop + "px, 0)"
+}
+// Audio context creation
+let audioContext = null
+window.addEventListener("load", evt => {
+  try {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext
+    audioContext = new AudioContext()
+    console.log(audioContext)
+  } catch (e) {
+    console.warn("Web Audio API is not supported in this browser")
+  }
+  const button = document.querySelector(".square-3")
+  button.onclick = () => {
+    let soundBuffer = null
+    loadSound(
+      "https://ia600607.us.archive.org/15/items/Spacejunk_201707/Spacejunk.flac"
+    )
+  }
+})
+// Loading audio file
+function loadSound(url) {
+  soundBuffer = audioContext.createBufferSource()
+  fetch(url, { method: "GET" })
+    .then(response => response.arrayBuffer())
+    .then(buffer => {
+      audioContext.decodeAudioData(buffer, decodedData => {
+        soundBuffer.buffer = decodedData
+        soundBuffer.connect(audioContext.destination)
+        soundBuffer.start(0)
+      })
+    })
+    .catch(err => console.error(err))
 }
