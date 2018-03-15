@@ -37,3 +37,10 @@ body {
   width: 100px;
   height: 100px;
 }
+
+.square-4 {
+  background-color: lightpink;
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+}
